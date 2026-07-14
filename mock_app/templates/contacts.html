@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Northwind CRM — Contacts</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  {% include "_nav.html" %}
+  <div class="shell">
+    <h1>Contacts</h1>
+    <p class="subtitle">Search is backed by a live API call — results are not instant.</p>
+
+    <div class="card">
+      <div class="search-row">
+        <input type="text" id="search" placeholder="Search company name…">
+        <button id="search-btn" type="button">Search</button>
+      </div>
+      <table id="contacts-table">
+        <thead>
+          <tr><th>Company</th><th>Owner</th><th>Stage</th></tr>
+        </thead>
+        <tbody id="contacts-body">
+          <tr><td colspan="3" style="color: var(--muted);">Loading…</td></tr>
+        </tbody>
+      </table>
+      <p id="result-count" style="color: var(--muted); font-size: 13px; margin-top: 14px;"></p>
+    </div>
+  </div>
+
+  {% include "_cookie_banner.html" %}
+
+  <script>
+    var body = document.getElementById("contacts-body");
+    var countEl = document.getElementById("result-count");
+
+    function runSearch(q) {
+      body.innerHTML = '<tr id="loading-row"><td colspan="3">Searching…</td></tr>';
+      countEl.textContent = "";
+      fetch("/api/contacts?q=" + encodeURIComponent(q))
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          body.innerHTML = "";
+          data.results.forEach(function (c) {
+            var tr = document.createElement("tr");
+            tr.innerHTML = "<td>" + c.name + "</td><td>" + c.owner + "</td><td><span class=\"badge\">" + c.stage + "</span></td>";
+            body.appendChild(tr);
+          });
+          countEl.textContent = data.count + " result" + (data.count === 1 ? "" : "s");
+        });
+    }
+
+    document.getElementById("search-btn").addEventListener("click", function () {
+      runSearch(document.getElementById("search").value);
+    });
+    document.getElementById("search").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") runSearch(this.value);
+    });
+
+    runSearch("");
+  </script>
+</body>
+</html>

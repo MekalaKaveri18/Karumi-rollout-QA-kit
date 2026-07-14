@@ -1,0 +1,28 @@
+{
+  "name": "Northwind CRM \u2014 rollout smoke test",
+  "base_url": "http://127.0.0.1:5050",
+  "steps": [
+    { "action": "navigate", "path": "/login", "description": "Open login page" },
+    { "action": "dismiss_if_present", "selector": "#cookie-accept", "wait_ms": 1500, "description": "Dismiss cookie banner if shown" },
+    { "action": "fill", "selector": "#username", "value": "demo_fde", "description": "Enter username" },
+    { "action": "fill", "selector": "#password", "value": "demo123", "description": "Enter password" },
+    { "action": "click", "selector": "#login-submit", "description": "Submit login" },
+    { "action": "wait_for", "selector": ".stat-grid", "description": "Wait for dashboard to load" },
+    { "action": "dismiss_if_present", "selector": "#whats-new-dismiss", "wait_ms": 2000, "description": "Dismiss 'what's new' modal if it appears" },
+    { "action": "click", "selector": "#nav-contacts", "description": "Navigate to Contacts" },
+    { "action": "wait_for", "selector": "#contacts-table", "description": "Wait for contacts table to render" },
+    { "action": "fill", "selector": "#search", "value": "Acme", "description": "Type 'Acme' into search" },
+    { "action": "click", "selector": "#search-btn", "description": "Trigger search" },
+    { "action": "assert_text", "selector": "#result-count", "contains": "2 results", "timeout_ms": 6000, "description": "Confirm search returns both Acme accounts" },
+    { "action": "click", "selector": "#nav-settings", "description": "Navigate to Settings" },
+    { "action": "wait_for", "selector": "#company-name", "description": "Wait for settings step 1" },
+    { "action": "fill", "selector": "#company-name", "value": "Karumi Test Co", "description": "Enter company name" },
+    { "action": "click", "selector": "#to-step-2", "description": "Advance to step 2 of wizard" },
+    { "action": "wait_for", "selector": "#notify-slack", "description": "Wait for step 2 to render" },
+    { "action": "click", "selector": "#notify-slack", "description": "Enable Slack alerts" },
+    { "action": "click", "selector": "#to-step-3", "description": "Advance to step 3 (review)" },
+    { "action": "assert_text", "selector": "#confirm-summary", "contains": "Karumi Test Co", "description": "Confirm review screen reflects entered company name" },
+    { "action": "click", "selector": "#finish", "description": "Finish setup" },
+    { "action": "wait_for", "selector": "#finish-msg", "description": "Confirm success message appears" }
+  ]
+}

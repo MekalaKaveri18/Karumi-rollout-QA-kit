@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Northwind CRM — Settings</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  {% include "_nav.html" %}
+  <div class="shell">
+    <h1>Workspace settings</h1>
+    <p class="subtitle">A 3-step setup wizard — the kind of flow an agent has to walk through per customer.</p>
+
+    <div class="steps">
+      <div class="step-dot done" id="dot-1"></div>
+      <div class="step-dot" id="dot-2"></div>
+      <div class="step-dot" id="dot-3"></div>
+    </div>
+
+    <div class="card">
+      <div class="wizard-step active" id="step-1">
+        <div class="field">
+          <label for="company-name">Company name</label>
+          <input type="text" id="company-name" placeholder="e.g. Acme Corp">
+        </div>
+        <button id="to-step-2" type="button">Next</button>
+      </div>
+
+      <div class="wizard-step" id="step-2">
+        <p style="color: var(--muted); font-size: 14px; margin-top:0;">Notification preferences</p>
+        <div class="checkbox-row">
+          <input type="checkbox" id="notify-email" checked>
+          <label for="notify-email" style="margin:0;">Email me on new deals</label>
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="notify-slack">
+          <label for="notify-slack" style="margin:0;">Send Slack alerts</label>
+        </div>
+        <button class="secondary" id="back-to-1" type="button" style="margin-right:8px;">Back</button>
+        <button id="to-step-3" type="button">Next</button>
+      </div>
+
+      <div class="wizard-step" id="step-3">
+        <p style="color: var(--muted); font-size: 14px; margin-top:0;">Review &amp; confirm</p>
+        <div class="confirm-box" id="confirm-summary"></div>
+        <button id="finish" type="button" style="margin-top:16px;">Finish setup</button>
+        <p id="finish-msg" class="hidden" style="color: var(--good); margin-top: 12px;">✓ Workspace configured.</p>
+      </div>
+    </div>
+  </div>
+
+  {% include "_cookie_banner.html" %}
+
+  <script>
+    function goTo(step) {
+      ["1", "2", "3"].forEach(function (n) {
+        document.getElementById("step-" + n).classList.toggle("active", n === step);
+        document.getElementById("dot-" + n).classList.toggle("done", Number(n) <= Number(step));
+      });
+    }
+    document.getElementById("to-step-2").addEventListener("click", function () { goTo("2"); });
+    document.getElementById("back-to-1").addEventListener("click", function () { goTo("1"); });
+    document.getElementById("to-step-3").addEventListener("click", function () {
+      var name = document.getElementById("company-name").value || "(no company name set)";
+      var email = document.getElementById("notify-email").checked ? "on" : "off";
+      var slack = document.getElementById("notify-slack").checked ? "on" : "off";
+      document.getElementById("confirm-summary").textContent =
+        "company: " + name + "\nemail_alerts: " + email + "\nslack_alerts: " + slack;
+      goTo("3");
+    });
+    document.getElementById("finish").addEventListener("click", function () {
+      document.getElementById("finish-msg").classList.remove("hidden");
+    });
+  </script>
+</body>
+</html>

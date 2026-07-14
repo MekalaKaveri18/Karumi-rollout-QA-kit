@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Northwind CRM — Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  {% include "_nav.html" %}
+  <div class="shell">
+    <h1>Welcome back, {{ user }}</h1>
+    <p class="subtitle">Here's what's happening across your pipeline today.</p>
+
+    <div class="stat-grid">
+      <div class="stat"><div class="n">5</div><div class="l">Open opportunities</div></div>
+      <div class="stat"><div class="n">2</div><div class="l">Demos scheduled</div></div>
+      <div class="stat"><div class="n">1</div><div class="l">Closed won (30d)</div></div>
+    </div>
+
+    <div class="card">
+      <p style="margin-top:0; color: var(--muted); font-size: 14px;">
+        Use the nav above to browse Contacts or update workspace Settings.
+      </p>
+    </div>
+  </div>
+
+  {% include "_cookie_banner.html" %}
+
+  <!-- "What's new" modal: appears ~1.2s after page load, not on initial render.
+       Any automation that doesn't explicitly wait for / dismiss this will have
+       its next click silently swallowed by the backdrop. -->
+  <div id="whats-new-backdrop" class="modal-backdrop hidden">
+    <div class="modal">
+      <h2>New: Deal stage automation</h2>
+      <p style="color: var(--muted); font-size: 14px;">
+        Contacts now move stages automatically based on activity. You can turn this off in Settings.
+      </p>
+      <button id="whats-new-dismiss" type="button">Got it</button>
+    </div>
+  </div>
+  <script>
+    setTimeout(function () {
+      document.getElementById("whats-new-backdrop").classList.remove("hidden");
+    }, 1200);
+    document.getElementById("whats-new-dismiss").addEventListener("click", function () {
+      document.getElementById("whats-new-backdrop").classList.add("hidden");
+    });
+  </script>
+</body>
+</html>

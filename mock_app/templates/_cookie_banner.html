@@ -1,0 +1,22 @@
+<div id="cookie-banner" class="hidden">
+  <p>Northwind CRM uses cookies to keep you signed in and improve the product.</p>
+  <div style="display:flex; gap:8px; flex-shrink:0;">
+    <button class="secondary" id="cookie-decline" type="button">Decline</button>
+    <button id="cookie-accept" type="button">Accept</button>
+  </div>
+</div>
+<script>
+  (function () {
+    var KEY = "nw_cookie_consent";
+    var banner = document.getElementById("cookie-banner");
+    if (!localStorage.getItem(KEY)) {
+      banner.classList.remove("hidden");
+    }
+    function dismiss(value) {
+      localStorage.setItem(KEY, value);
+      banner.classList.add("hidden");
+    }
+    document.getElementById("cookie-accept").addEventListener("click", function () { dismiss("accepted"); });
+    document.getElementById("cookie-decline").addEventListener("click", function () { dismiss("declined"); });
+  })();
+</script>

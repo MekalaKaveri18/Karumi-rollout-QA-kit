@@ -1,0 +1,9 @@
+<div class="topbar">
+  <div class="brand"><div class="mark"></div> Northwind CRM</div>
+  <div class="nav">
+    <a href="/dashboard" class="{{ 'active' if active == 'dashboard' }}" id="nav-dashboard">Dashboard</a>
+    <a href="/contacts" class="{{ 'active' if active == 'contacts' }}" id="nav-contacts">Contacts</a>
+    <a href="/settings" class="{{ 'active' if active == 'settings' }}" id="nav-settings">Settings</a>
+  </div>
+  <div class="user-chip">{{ user }} &middot; <a href="/logout">sign out</a></div>
+</div>
